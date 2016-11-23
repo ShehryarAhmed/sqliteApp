@@ -77,6 +77,8 @@ public class GetProductDetail extends AppCompatActivity {
 
         db.insert(ProductContract.ProductEntry.TABLE_NAME,null,values);
 
+
+
     }
 
     }

@@ -22,10 +22,10 @@ public class Productdphelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        String  CREATE_PRODUCT_TABLE = "CREATE TABLE "+ProductContract.ProductEntry.TABLE_NAME+" ("
-                +ProductContract.ProductEntry.PRODUCT_TITLE + " TEXT NOT NULL, "
-                +ProductContract.ProductEntry.PRODUCT_price + " INTEGER NOT NULL, "
-                +ProductContract.ProductEntry.PRODUCT_QUANTITY + " INTEGER NOT NULL ";
+        String  CREATE_PRODUCT_TABLE = "CREATE TABLE IF NOT EXISTS "+ProductContract.ProductEntry.TABLE_NAME + " ("
+                + ProductContract.ProductEntry.PRODUCT_TITLE + " TEXT NOT NULL, "
+                + ProductContract.ProductEntry.PRODUCT_price + " INTEGER NOT NULL, "
+                + ProductContract.ProductEntry.PRODUCT_QUANTITY + " INTEGER NOT NULL );";
         Log.e("LOGTAG" , CREATE_PRODUCT_TABLE);
 
         // Execute the SQL statement
