@@ -11,6 +11,9 @@ package com.example.android.sqlite.Model;
 
         private int mproduct_price;
 
+        public ProductDetail(){
+
+        }
         public ProductDetail(String mproduct_title, int mproduct_quantity, int mproduct_price) {
             this.mproduct_title = mproduct_title;
             this.mproduct_quantity = mproduct_quantity;

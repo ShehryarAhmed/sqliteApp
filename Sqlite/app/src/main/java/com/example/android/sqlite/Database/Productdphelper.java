@@ -3,6 +3,7 @@ package com.example.android.sqlite.Database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by android on 11/22/2016.
@@ -22,9 +23,10 @@ public class Productdphelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
         String  CREATE_PRODUCT_TABLE = "CREATE TABLE "+ProductContract.ProductEntry.TABLE_NAME+" ("
-                +ProductContract.ProductEntry.PRODUCT_TITLE + " TEXT NOT NULL"
-                +ProductContract.ProductEntry.PRODUCT_price + " INTEGER NOT NULL"
-                +ProductContract.ProductEntry.PRODUCT_QUANTITY + " INTEGER NOT NULL";
+                +ProductContract.ProductEntry.PRODUCT_TITLE + " TEXT NOT NULL, "
+                +ProductContract.ProductEntry.PRODUCT_price + " INTEGER NOT NULL, "
+                +ProductContract.ProductEntry.PRODUCT_QUANTITY + " INTEGER NOT NULL ";
+        Log.e("LOGTAG" , CREATE_PRODUCT_TABLE);
 
         // Execute the SQL statement
 

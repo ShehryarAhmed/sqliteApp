@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.example.android.sqlite.Adapter.ProductDisplayAdapter;
 import com.example.android.sqlite.Database.ProductContract;
 import com.example.android.sqlite.Database.Productdphelper;
 import com.example.android.sqlite.Model.ProductDetail;
@@ -36,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         ListView listView = (ListView) findViewById(R.id.list);
+
+        ProductDisplayAdapter mproductDisplayAdapter = new ProductDisplayAdapter(this,displayDatabaseInfo());
+
+        listView.setAdapter(mproductDisplayAdapter);
 
     }
 
