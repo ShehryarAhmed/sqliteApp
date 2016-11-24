@@ -1,6 +1,7 @@
 package com.example.android.sqlite;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -61,7 +62,6 @@ public class GetProductDetail extends AppCompatActivity {
         String quantityString = mproduct_quantity.getText().toString().trim();
 
         int quantityint = Integer.parseInt(quantityString);
-
 
         Productdphelper mpetDBhelper = new Productdphelper(this);
 
