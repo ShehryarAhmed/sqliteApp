@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Sqlite</string>
+    <string name="discard">Discard</string>
+    <string name="sale">Sale</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_dialog_msg">Delete this pet?</string>
+
 </resources>

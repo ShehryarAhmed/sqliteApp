@@ -1,5 +1,6 @@
 package com.example.android.sqlite;
 
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -44,6 +45,8 @@ public class GetProductDetail extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 insertpet();
+                finish();
+
             }
         });
 

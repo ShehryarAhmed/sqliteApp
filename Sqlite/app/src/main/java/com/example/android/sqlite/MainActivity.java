@@ -1,5 +1,7 @@
 package com.example.android.sqlite;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,7 +9,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.MenuAdapter;
+import android.support.v7.view.menu.ShowableListMenu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,10 +26,26 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     Productdphelper mproductdphelper = new Productdphelper(this);
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+
+        ListView listView = (ListView) findViewById(R.id.list);
+
+        ProductDisplayAdapter mproductDisplayAdapter = new ProductDisplayAdapter(this,displayDatabaseInfo());
+
+        listView.setAdapter(mproductDisplayAdapter);
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.fab);
 
         fb.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +61,14 @@ public class MainActivity extends AppCompatActivity {
         ProductDisplayAdapter mproductDisplayAdapter = new ProductDisplayAdapter(this,displayDatabaseInfo());
 
         listView.setAdapter(mproductDisplayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                showDeleteConfirmationDialog();
+
+                        }
+        });
 
     }
 
@@ -106,5 +134,33 @@ public class MainActivity extends AppCompatActivity {
         }
         return arrayList;
 
+    }
+
+    private void showDeleteConfirmationDialog(){
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the postivie and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage(R.string.delete_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete the pet.
+    //            deletePet();
+                Toast.makeText(MainActivity.this,"adsada",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        builder.setNegativeButton(R.string.sale, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                // and continue editing the pet.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
