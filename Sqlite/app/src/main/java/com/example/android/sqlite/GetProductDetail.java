@@ -44,7 +44,7 @@ public class GetProductDetail extends AppCompatActivity {
         mproduct_Add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertpet();
+                insertproduct();
                 finish();
 
             }
@@ -54,7 +54,7 @@ public class GetProductDetail extends AppCompatActivity {
 
 
 
-    private void insertpet() {
+    private void insertproduct() {
 
         String titleString = mproduct_title.getText().toString().trim();
 

@@ -23,6 +23,7 @@ public class Productdphelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
         String  CREATE_PRODUCT_TABLE = "CREATE TABLE IF NOT EXISTS "+ProductContract.ProductEntry.TABLE_NAME + " ("
+                + ProductContract.ProductEntry.mID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ProductContract.ProductEntry.PRODUCT_TITLE + " TEXT NOT NULL, "
                 + ProductContract.ProductEntry.PRODUCT_price + " INTEGER NOT NULL, "
                 + ProductContract.ProductEntry.PRODUCT_QUANTITY + " INTEGER NOT NULL );";
@@ -36,5 +37,9 @@ public class Productdphelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
+    }
+
+    public void deleteProduct(int product_id){
+        this.getWritableDatabase().delete(ProductContract.ProductEntry.TABLE_NAME,ProductContract.ProductEntry.mID+"="+product_id,null);
     }
 }

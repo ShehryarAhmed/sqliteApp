@@ -30,15 +30,18 @@ public class MainActivity extends AppCompatActivity {
 
     Productdphelper mproductdphelper = new Productdphelper(this);
 
+    ProductDisplayAdapter mproductDisplayAdapter;
+
+    ArrayList<ProductDetail> mproduct_arrayList;
+
+
     @Override
     protected void onStart() {
 
         super.onStart();
 
         ListView listView = (ListView) findViewById(R.id.list);
-
-        ProductDisplayAdapter mproductDisplayAdapter = new ProductDisplayAdapter(this,displayDatabaseInfo());
-
+        mproductDisplayAdapter = new  ProductDisplayAdapter(this,displayDatabaseInfo());
         listView.setAdapter(mproductDisplayAdapter);
 
     }
@@ -61,14 +64,16 @@ public class MainActivity extends AppCompatActivity {
         });
         ListView listView = (ListView) findViewById(R.id.list);
 
-        ProductDisplayAdapter mproductDisplayAdapter = new ProductDisplayAdapter(this,displayDatabaseInfo());
+        mproductDisplayAdapter = new ProductDisplayAdapter(this,displayDatabaseInfo());
 
         listView.setAdapter(mproductDisplayAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                showDeleteConfirmationDialog();
+            public void onItemClick(AdapterView<?> adapterView, View view, final int position, long id) {
+                int currentItemId = mproduct_arrayList.get(position).get_mid();
+
+                mshow_Dialog(currentItemId,position);
 
                         }
         });
@@ -81,13 +86,14 @@ public class MainActivity extends AppCompatActivity {
 
         SQLiteDatabase db = mproductdphelper.getReadableDatabase();
 
-        ArrayList<ProductDetail> arrayList = new ArrayList<>();
+         mproduct_arrayList = new ArrayList<>();
 
         // Define a projection that specifies which columns from the database
 
         // you will actually use after this query.
 
         String[] projection = {
+                ProductContract.ProductEntry.mID,
                 ProductContract.ProductEntry.PRODUCT_TITLE,
                 ProductContract.ProductEntry.PRODUCT_price,
                 ProductContract.ProductEntry.PRODUCT_QUANTITY,
@@ -107,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
 
             // Figure out the index of each column
 
+            int product_idColumIndex = cursor.getColumnIndex(ProductContract.ProductEntry.mID);
+
             int product_titleColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.PRODUCT_TITLE);
 
             int product_priceColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.PRODUCT_price);
@@ -120,13 +128,15 @@ public class MainActivity extends AppCompatActivity {
                 // Use that index to extract the String or Int value of the word
                 // at the current row the cursor is on.
 
+                int product_currentid = cursor.getInt(product_idColumIndex);
+
                 String product_currenttitle = cursor.getString(product_titleColumnIndex);
 
                 int product_currentprice = cursor.getInt(product_priceColumnIndex);
 
                 int product_currentquantity = cursor.getInt(product_quantityColumnIndex);
 
-                arrayList.add(new ProductDetail(product_currenttitle,product_currentprice,product_currentquantity));
+                mproduct_arrayList.add(new ProductDetail(product_currentid,product_currenttitle,product_currentprice,product_currentquantity));
 
             }
 
@@ -135,11 +145,11 @@ public class MainActivity extends AppCompatActivity {
             // resources and makes it invalid.
             cursor.close();
         }
-        return arrayList;
+        return mproduct_arrayList;
 
     }
 
-    private void showDeleteConfirmationDialog(){
+    private void mshow_Dialog(final int position,final int  getitemposition){
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the postivie and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -147,8 +157,9 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Delete" button, so delete the pet.
-    //            deletePet();
-                Toast.makeText(MainActivity.this,"adsada",Toast.LENGTH_SHORT).show();
+                mproductdphelper.deleteProduct(position);
+                mproduct_arrayList.remove(getitemposition);
+                mproductDisplayAdapter.notifyDataSetChanged();
 
             }
         });
@@ -172,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                     builder.setNegativeButton("Delete Item", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+
 
                         }
                     });
