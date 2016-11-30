@@ -43,10 +43,15 @@ public class Productdphelper extends SQLiteOpenHelper {
     public void deleteProduct(int product_id){
         this.getWritableDatabase().delete(ProductContract.ProductEntry.TABLE_NAME,ProductContract.ProductEntry.mID+"="+product_id,null);
     }
+
     public void updateProduct(int product_id,int quantity){
-        ContentValues values = new ContentValues();
-        values.put(ProductContract.ProductEntry.PRODUCT_QUANTITY,String .valueOf(quantity));
-        this.getWritableDatabase().update(ProductContract.ProductEntry.TABLE_NAME,values,ProductContract.ProductEntry.mID
+
+        ContentValues value = new ContentValues();
+
+        value.put(ProductContract.ProductEntry.PRODUCT_QUANTITY, String.valueOf(quantity));
+
+
+        this.getWritableDatabase().update(ProductContract.ProductEntry.TABLE_NAME,value,ProductContract.ProductEntry.mID
                 +"="+product_id,null);
     }
 }

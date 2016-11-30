@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+
         FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.fab);
 
         fb.setOnClickListener(new View.OnClickListener() {
@@ -165,49 +166,57 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.setNegativeButton(R.string.sale, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Cancel" button, so dismiss the dialog
-                // and continue editing the pet.
                 {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.sale_layout, null);
-                    final EditText meditText = (EditText) view.findViewById(R.id.edit_saleOrder);
-                    builder.setTitle("Sale");
-                    builder.setMessage("Write the Quantity to Sale ...?");
-                    builder.setPositiveButton("Sale", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-/*
-                            Toast.makeText(MainActivity.this,"sale",Toast.LENGTH_SHORT).show();
-*/
-                            final int id = productId;
+                    sale_alert(productId,getitemposition);
 
-                            final int noOfSale = mproduct_arrayList.get(getitemposition).getMproduct_quantity()
-                                    - Integer.valueOf(meditText.getText().toString());
-
-                            mproductdphelper.updateProduct(id,noOfSale);
-
-
-                            mproductDisplayAdapter.notifyDataSetChanged();
-
-
-
-                        }
-                    });
-                    builder.setNegativeButton("", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-
-                        }
-                    });
-                    builder.setView(view);
-                    builder.create().show();
-                }
+               }
                }
         });
 
         // Create and show the AlertDialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+    private void sale_alert(final int productId,final int getitemposition){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+        View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.sale_layout, null);
+
+        final EditText meditText = (EditText) view.findViewById(R.id.edit_saleOrder);
+
+        builder.setTitle("Sale");
+
+        builder.setMessage("Write the Quantity to Sale ...?");
+
+        builder.setPositiveButton("Sale", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                final int id = productId;
+
+                final int howManySale =  Integer.valueOf(meditText.getText().toString().trim());
+
+                final int noOfSale = mproduct_arrayList.get(getitemposition).getMproduct_quantity()
+                        - howManySale;
+                Log.e("check",""+productId+" "+noOfSale+" "+howManySale);
+
+                ProductDetail productDetail = new ProductDetail((mproduct_arrayList.get(getitemposition).get_mid()),
+                        mproduct_arrayList.get(getitemposition).getMproduct_title(),noOfSale,(mproduct_arrayList.get(getitemposition).getMproduct_price()));
+
+                mproduct_arrayList.set(getitemposition,productDetail);
+
+                mproductDisplayAdapter.notifyDataSetChanged();
+
+                mproductdphelper.updateProduct(id,noOfSale);
+
+
+
+
+            }
+        });
+        builder.setView(view);
+        builder.create().show();
+
     }
 }
