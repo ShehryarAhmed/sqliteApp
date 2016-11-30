@@ -71,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int position, long id) {
-                int currentItemId = mproduct_arrayList.get(position).get_mid();
+                int currentProductId = mproduct_arrayList.get(position).get_mid();
 
-                mshow_Dialog(currentItemId,position);
+                mshow_Dialog(currentProductId,position);
 
                         }
         });
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void mshow_Dialog(final int position,final int  getitemposition){
+    private void mshow_Dialog(final int productId,final int  getitemposition){
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the postivie and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Delete" button, so delete the pet.
-                mproductdphelper.deleteProduct(position);
+                mproductdphelper.deleteProduct(productId);
                 mproduct_arrayList.remove(getitemposition);
                 mproductDisplayAdapter.notifyDataSetChanged();
 
@@ -170,17 +170,26 @@ public class MainActivity extends AppCompatActivity {
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.sale_layout, null);
-                    final EditText edt = (EditText) view.findViewById(R.id.edit_saleOrder);
+                    final EditText meditText = (EditText) view.findViewById(R.id.edit_saleOrder);
                     builder.setTitle("Sale");
                     builder.setMessage("Write the Quantity to Sale ...?");
                     builder.setPositiveButton("Sale", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+/*
                             Toast.makeText(MainActivity.this,"sale",Toast.LENGTH_SHORT).show();
+*/
+                            final int id = productId;
+
+                            final int noOfSale = mproduct_arrayList.get(getitemposition).getMproduct_quantity()
+                                    - Integer.valueOf(meditText.getText().toString());
+
+                            mproductdphelper.updateProduct(id,noOfSale);
+
 
                         }
                     });
-                    builder.setNegativeButton("Delete Item", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton("", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 

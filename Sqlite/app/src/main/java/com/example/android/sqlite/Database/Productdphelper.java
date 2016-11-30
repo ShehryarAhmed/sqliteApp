@@ -1,5 +1,6 @@
 package com.example.android.sqlite.Database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -41,5 +42,11 @@ public class Productdphelper extends SQLiteOpenHelper {
 
     public void deleteProduct(int product_id){
         this.getWritableDatabase().delete(ProductContract.ProductEntry.TABLE_NAME,ProductContract.ProductEntry.mID+"="+product_id,null);
+    }
+    public void updateProduct(int product_id,int quantity){
+        ContentValues values = new ContentValues();
+        values.put(ProductContract.ProductEntry.PRODUCT_QUANTITY,String .valueOf(quantity));
+        this.getWritableDatabase().update(ProductContract.ProductEntry.TABLE_NAME,values,ProductContract.ProductEntry.mID
+                +"="+product_id,null);
     }
 }
