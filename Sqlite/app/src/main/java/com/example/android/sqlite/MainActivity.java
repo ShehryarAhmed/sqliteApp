@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
                             mproductdphelper.updateProduct(id,noOfSale);
 
-                            
+
                             mproductDisplayAdapter.notifyDataSetChanged();
 
 
