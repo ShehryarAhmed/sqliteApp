@@ -8,10 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.view.menu.MenuAdapter;
-import android.support.v7.view.menu.ShowableListMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -40,8 +40,16 @@ public class MainActivity extends AppCompatActivity {
 
         super.onStart();
 
+        setAdapterInListview(displayDatabaseInfo());
+
+    }
+
+    private void setAdapterInListview(ArrayList<ProductDetail> displaydata) {
+
         ListView listView = (ListView) findViewById(R.id.list);
-        mproductDisplayAdapter = new  ProductDisplayAdapter(this,displayDatabaseInfo());
+
+        mproductDisplayAdapter = new ProductDisplayAdapter(this, displaydata);
+
         listView.setAdapter(mproductDisplayAdapter);
 
     }
@@ -52,20 +60,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
         FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.fab);
 
         fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this,"adsada",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "adsada", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, GetProductDetail.class);
                 startActivity(intent);
             }
         });
         ListView listView = (ListView) findViewById(R.id.list);
 
-        mproductDisplayAdapter = new ProductDisplayAdapter(this,displayDatabaseInfo());
+        mproductDisplayAdapter = new ProductDisplayAdapter(this, displayDatabaseInfo());
 
         listView.setAdapter(mproductDisplayAdapter);
 
@@ -74,20 +81,20 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, final int position, long id) {
                 int currentProductId = mproduct_arrayList.get(position).get_mid();
 
-                mshow_Dialog(currentProductId,position);
+                mshow_Dialog(currentProductId, position);
 
-                        }
+            }
         });
 
     }
 
-    private ArrayList<ProductDetail> displayDatabaseInfo () {
+    private ArrayList<ProductDetail> displayDatabaseInfo() {
 
         // Create and/or open a database to read from it
 
         SQLiteDatabase db = mproductdphelper.getReadableDatabase();
 
-         mproduct_arrayList = new ArrayList<>();
+        mproduct_arrayList = new ArrayList<>();
 
         // Define a projection that specifies which columns from the database
 
@@ -138,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
                 int product_currentprice = cursor.getInt(product_priceColumnIndex);
 
-                mproduct_arrayList.add(new ProductDetail(product_currentid,product_currenttitle,product_currentquantity,product_currentprice));
+                mproduct_arrayList.add(new ProductDetail(product_currentid, product_currenttitle, product_currentquantity, product_currentprice));
 
             }
 
@@ -151,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void mshow_Dialog(final int productId,final int  getitemposition){
+    private void mshow_Dialog(final int productId, final int getitemposition) {
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the postivie and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -168,10 +175,10 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton(R.string.sale, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 {
-                    sale_alert(productId,getitemposition);
+                    sale_alert(productId, getitemposition);
 
-               }
-               }
+                }
+            }
         });
 
         // Create and show the AlertDialog
@@ -184,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPostResume();
     }
 
-    private void sale_alert(final int productId, final int getitemposition){
+    private void sale_alert(final int productId, final int getitemposition) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
@@ -202,23 +209,21 @@ public class MainActivity extends AppCompatActivity {
 
                 final int id = productId;
 
-                final int howManySale =  Integer.valueOf(meditText.getText().toString().trim());
+                final int howManySale = Integer.valueOf(meditText.getText().toString().trim());
 
-                final int  mcurrentQuantity = mproduct_arrayList.get(getitemposition).getMproduct_quantity();
+                final int mcurrentQuantity = mproduct_arrayList.get(getitemposition).getMproduct_quantity();
 
                 final int noOfSale = mcurrentQuantity - howManySale;
-                Log.e("check",""+productId+" "+noOfSale+" "+howManySale +"currentQuantity"+mcurrentQuantity );
+                Log.e("check", "" + productId + " " + noOfSale + " " + howManySale + "currentQuantity" + mcurrentQuantity);
 
                 ProductDetail productDetail = new ProductDetail((mproduct_arrayList.get(getitemposition).get_mid()),
-                        mproduct_arrayList.get(getitemposition).getMproduct_title(),noOfSale,(mproduct_arrayList.get(getitemposition).getMproduct_price()));
+                        mproduct_arrayList.get(getitemposition).getMproduct_title(), noOfSale, (mproduct_arrayList.get(getitemposition).getMproduct_price()));
 
-                mproduct_arrayList.set(getitemposition,productDetail);
+                mproduct_arrayList.set(getitemposition, productDetail);
 
                 mproductDisplayAdapter.notifyDataSetChanged();
 
-                mproductdphelper.updateProduct(id,noOfSale);
-
-
+                mproductdphelper.updateProduct(id, noOfSale);
 
 
             }
@@ -227,4 +232,34 @@ public class MainActivity extends AppCompatActivity {
         builder.create().show();
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu options from the res/menu/menu_mainvieww.xml file.
+        // This adds menu items to the app bar.
+        getMenuInflater().inflate(R.menu.menu_mainview, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // User clicked on a menu option in the app bar overflow menu
+        switch (item.getItemId()) {
+            // Respond to a click on the "Insert dummy data" menu option
+            case R.id.show_item_history:
+                setAdapterInListview(displayDatabaseInfo());
+                return true;
+            // Respond to a click on the "Delete all entries" menu option
+            case R.id.show_sale_history:
+                setAdapterInListview(displayDatabaseInfo());
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private ArrayList<ProductDetail> displayitemhistory() {
+        return
+    }
+
 }
