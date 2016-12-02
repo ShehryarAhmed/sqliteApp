@@ -96,8 +96,9 @@ public class MainActivity extends AppCompatActivity {
         String[] projection = {
                 ProductContract.ProductEntry.mID,
                 ProductContract.ProductEntry.PRODUCT_TITLE,
-                ProductContract.ProductEntry.PRODUCT_price,
                 ProductContract.ProductEntry.PRODUCT_QUANTITY,
+                ProductContract.ProductEntry.PRODUCT_price,
+
         };
 
         // Perform a query on the product table
@@ -133,11 +134,11 @@ public class MainActivity extends AppCompatActivity {
 
                 String product_currenttitle = cursor.getString(product_titleColumnIndex);
 
-                int product_currentprice = cursor.getInt(product_priceColumnIndex);
-
                 int product_currentquantity = cursor.getInt(product_quantityColumnIndex);
 
-                mproduct_arrayList.add(new ProductDetail(product_currentid,product_currenttitle,product_currentprice,product_currentquantity));
+                int product_currentprice = cursor.getInt(product_priceColumnIndex);
+
+                mproduct_arrayList.add(new ProductDetail(product_currentid,product_currenttitle,product_currentquantity,product_currentprice));
 
             }
 
@@ -177,7 +178,13 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-    private void sale_alert(final int productId,final int getitemposition){
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    }
+
+    private void sale_alert(final int productId, final int getitemposition){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
@@ -197,9 +204,10 @@ public class MainActivity extends AppCompatActivity {
 
                 final int howManySale =  Integer.valueOf(meditText.getText().toString().trim());
 
-                final int noOfSale = mproduct_arrayList.get(getitemposition).getMproduct_quantity()
-                        - howManySale;
-                Log.e("check",""+productId+" "+noOfSale+" "+howManySale);
+                final int  mcurrentQuantity = mproduct_arrayList.get(getitemposition).getMproduct_quantity();
+
+                final int noOfSale = mcurrentQuantity - howManySale;
+                Log.e("check",""+productId+" "+noOfSale+" "+howManySale +"currentQuantity"+mcurrentQuantity );
 
                 ProductDetail productDetail = new ProductDetail((mproduct_arrayList.get(getitemposition).get_mid()),
                         mproduct_arrayList.get(getitemposition).getMproduct_title(),noOfSale,(mproduct_arrayList.get(getitemposition).getMproduct_price()));

@@ -58,13 +58,13 @@ public class GetProductDetail extends AppCompatActivity {
 
         String titleString = mproduct_title.getText().toString().trim();
 
-        String priceString = mproduct_price.getText().toString().trim();
-
-        int priceint = Integer.parseInt(priceString);
-
         String quantityString = mproduct_quantity.getText().toString().trim();
 
         int quantityint = Integer.parseInt(quantityString);
+
+        String priceString = mproduct_price.getText().toString().trim();
+
+        int priceint = Integer.parseInt(priceString);
 
         Productdphelper mpetDBhelper = new Productdphelper(this);
 
@@ -74,13 +74,11 @@ public class GetProductDetail extends AppCompatActivity {
 
         values.put(ProductContract.ProductEntry.PRODUCT_TITLE, titleString);
 
-        values.put(ProductContract.ProductEntry.PRODUCT_price, priceint);
-
         values.put(ProductContract.ProductEntry.PRODUCT_QUANTITY, quantityint);
 
+        values.put(ProductContract.ProductEntry.PRODUCT_price, priceint);
+
         db.insert(ProductContract.ProductEntry.TABLE_NAME,null,values);
-
-
 
     }
 

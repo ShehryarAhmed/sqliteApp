@@ -30,13 +30,13 @@ public class ProductDisplayAdapter extends ArrayAdapter<ProductDetail> {
         }
         ProductDetail mproductDetail = getItem(position);
 
-        TextView pet_name = (TextView) view.findViewById(R.id.titleview);
+        TextView mtitleView = (TextView) view.findViewById(R.id.titleview);
 
-        pet_name.setText(mproductDetail.getMproduct_title());
+        mtitleView.setText(""+mproductDetail.getMproduct_title());
 
-        TextView pet_breed = (TextView) view.findViewById(R.id.price);
+        TextView mquantityView = (TextView) view.findViewById(R.id.price);
 
-        pet_breed.setText(""+mproductDetail.getMproduct_price());
+        mquantityView.setText(""+mproductDetail.getMproduct_quantity());
 
         return view;
     }
